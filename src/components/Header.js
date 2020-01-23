@@ -1,15 +1,26 @@
 import React from 'react';
+import {connect} from 'react-redux';
 
 const Header = props => {
   return (
     <>
-      <figure className="image is-128x128">
-        <img src={props.car.image} alt={props.car.name} />
+      <figure className="image">
+        <img className='is-rounded' src={props.car.image} alt={props.car.name}/>
       </figure>
-      <h2>{props.car.name}</h2>
-      <p>Amount: ${props.car.price}</p>
+      <h4>{props.car.name}</h4>
+      {(props.additionalPrice === 0) ? 
+      <p>Amount: ${props.car.price}</p> :
+      <p>Amount: ${props.car.price + props.additionalPrice}</p> 
+      }
     </>
   );
 };
-
-export default Header;
+const mapStateToProps = state =>{
+  return{
+    additionalPrice: state.featuresReducer.additionalPrice,
+    car: state.featuresReducer.car
+  }
+}
+export default connect(
+  mapStateToProps
+)(Header);
